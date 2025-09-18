@@ -1,5 +1,5 @@
 
-<img src="/logo/mint.png" alt="Logo" width="300"/>
+<img src="./logo/mint.png" alt="Logo" width="300"/>
 
 Mint UI is a complete Flutter UI kit that leverages the power of `material.dart` and provides a suite of helpful extensions and constants to streamline UI development. It's designed to help you build beautiful, consistent, and responsive user interfaces with ease.
 
