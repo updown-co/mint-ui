@@ -139,6 +139,17 @@ extension ScreenDimensionExtension on BuildContext {
   /// Checks if the device is mobile size
   bool get isMobileSize => getIsMobileSize(this);
 
+  // Checks if the device is mobile (width < 600) && Checks platform
+  bool get isMobile => getIsMobile(this);
+
+  // Checks if the device is tablet (width >= 600 && < 1024) && Checks platform
+  bool get isTablet => getIsMobile(this);
+
+  // Checks if the device is desktop (width >= 1024) && Checks platform
+  bool get isDesktop => getIsDesktop(this);
+
+  bool get isWeb => getIsWeb(this);
+
   /// System UI Overlap
   /// Checks if system UI overlaps content
   bool get doesSystemUIOverlapContent => getDoesSystemUIOverlapContent(this);

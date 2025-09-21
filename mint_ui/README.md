@@ -1,18 +1,63 @@
 
 <img src="./logo/mint.png" alt="Logo" width="300"/>
 
-Mint UI is a complete Flutter UI kit that leverages the power of `material.dart` and provides a suite of helpful extensions and constants to streamline UI development. It's designed to help you build beautiful, consistent, and responsive user interfaces with ease.
+Mint UI is a comprehensive Flutter UI kit. It leverages the power of material.dart and provides a suite of helpful extensions, utilities, and widgets to streamline UI development. It's designed to help you build beautiful, consistent, and responsive user interfaces with ease.
 
 Developed by **Siva Sankar**,**UpDown Co**.
 
------
+---
 
 ## Features
 
-  * **Foundation on `material.dart`**: Seamlessly integrates with and extends the core Flutter Material library, ensuring familiarity and compatibility.
-  * **Consistent Spacing & Radius**: Predefined, scale-based spacing (`AppSpacing`) and border radius (`AppRadius`) constants ensure visual harmony across your app.
-  * **Comprehensive Extensions**: A powerful `BuildContext` extension (`ScreenDimensionExtension`) goes beyond basic screen dimensions. It provides detailed information on device properties, orientation, system UI, and a wide array of responsive design breakpoints and helpers.
-  * **Effortless Formatting**: A rich set of static helper classes provides methods for formatting prices, numbers, dates, and strings, as well as handling validation and other common tasks.
+*  **Built on `material.dart`**
+  Seamlessly integrates with the Flutter Material library for maximum compatibility and developer familiarity.
+
+*  **Consistent Spacing & Radius**
+  Use `AppSpacing` and `AppRadius` for scale-based and semantic spacing and border radius across your UI.
+
+* **Smart Layout Widgets**
+  Powerful layout utilities like:
+
+  * `Aligner` for declarative alignment
+  * `Flexer` for simplified flex layout
+  * `Inset` for semantic padding
+  * `Rounder` for readable rounded corners
+  * `Space`, `MaxSpace`, and `SliverSpace` for padding and gaps
+
+* **Declarative Conditional Widgets**
+
+  * `When`: Conditional rendering with optional `elseChild`
+  * `Match`: Switch-style rendering for UI based on values
+  * `AnimatedMatch`: Switch-style rendering for UI based on values with animation
+  * `Delayed`: A widget that delays the display of its child by a specified delay
+  * `Maybe`: A widget that conditionally displays its `child`.
+  * `Repeat`: A widget that builds a fixed number of widgets using a builder function.
+  * `Responsive`: Conditional render child based on the screen size.
+  * `LifeCycle`: A widget that provides lifecycle `callbacks` for its `child` widget
+
+  
+*  **Responsive Design Helpers**
+  `ScreenDimensionExtension` gives you:
+
+  * Screen size, orientation, safe areas, dark mode, keyboard visibility
+  * Device type checks: `isTabletSize`, `isSmallScreen`, `isWideScreen`
+  * Named breakpoints: `isXs`, `isSm`, `isMd`, `isLg`
+
+*  **Comprehensive Utility Classes**
+  Format and validate easily with:
+
+  * `DateTimeFormatters`, `PriceFormatters`, `NumberFormatters`
+  * `EmailUtilities`, `PhoneNumberUtilities`, `IndianValidators`
+  * `CalculationUtilities`, `ColorUtilities`, `StringUtilities`
+  * `JsonUtilities`, `ListUtilities`, `MapUtilities`, `DeviceUtilities`, etc.
+
+*  **Padding Extensions**
+  Extensions on `EdgeInsets` for checking and computing padding values easily (e.g., `.horizontal`, `.hasTopPadding`, etc.)
+
+* **Plug & Play Design System**
+  Unified design tokens and widgets that speed up UI development and enforce design consistency across your app.
+
+
 
 -----
 
@@ -38,6 +83,217 @@ import 'package:mint_ui/mint_ui.dart';
 ```
 
 
+## Widgets
+
+### `Space`
+Easy-to-use spacing widgets for both regular layouts and slivers.
+
+### Regular space
+
+```dart
+Column(
+  children: [
+    Text('Hello'),
+    Space(20), // 20 pixels of space
+    Text('World'),
+    Space(Spacing.large), // Predefined large spacing
+  ],
+)
+```
+
+### Using predefined sizes
+
+```dart
+Column(
+  children: [
+    Text('Tiny space above'),
+    Space.tiny(),
+    Text('Extra large space below'),
+    Space.extraLarge(),
+  ],
+)
+```
+
+### Flexible space in layouts
+
+```dart
+Row(
+  children: [
+    Text('Start'),
+    MaxSpace.fill(), // takes all remaining space
+    Text('End'),
+  ],
+)
+```
+
+### Sliver spacing
+
+```dart
+CustomScrollView(
+  slivers: [
+    SliverAppBar(title: Text('Header')),
+    SliverSpace(20), // 20 pixels of sliver space
+    SliverSpace.large(), // Predefined large sliver space
+    SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => ListTile(title: Text('Item $index')),
+        childCount: 10,
+      ),
+    ),
+  ],
+)
+```
+###  `Aligner`
+
+A simple wrapper around `Align` with named constructors for common positions.
+
+```dart
+Aligner.center(child: Text('Centered'));
+Aligner.bottomRight(child: Icon(Icons.star));
+```
+
+---
+
+###  `Flexer`
+
+Wraps `Flexible` or `Expanded` based on the `tight` flag. Reduces boilerplate inside `Row` or `Column`.
+
+```dart
+Flexer(child: MyWidget()); // Uses Expanded by default
+
+Flexer(flex: 2, tight: false, child: MyWidget()); // Uses Flexible
+```
+
+---
+
+###  `Inset`
+
+A semantic wrapper around `Padding` with expressive constructors.
+
+```dart
+Inset.all(16, child: Text("All sides"));
+
+Inset.symmetric(horizontal: 20, vertical: 12, child: Text("Symmetric"));
+
+Inset.custom(top: 10, left: 8, child: Text("Custom"));
+```
+
+---
+
+###  `Rounder`
+
+A flexible `ClipRRect` wrapper to apply rounded corners in a more readable way.
+
+```dart
+Rounder.circular(12, child: Image(...));
+
+Rounder.top(16, child: Container(...));
+
+Rounder.custom(
+  topLeft: 12,
+  bottomRight: 20,
+  child: Container(...),
+);
+```
+
+---
+
+###  `When`
+
+Simple conditional rendering widget for clean, declarative layout.
+
+```dart
+When(
+  isLoggedIn,
+  child: Text("Welcome back!"),
+  elseChild: Text("Please log in."),
+);
+```
+
+###  `Match`
+A conditional widget that renders a child based on a matching [value].  Works like a `switch` statement in Dart.
+ ```dart
+ Match<String>(
+   value: status,
+   cases: {
+     'loading': Center(child: CircularProgressIndicator()),
+     'success': Text('Success!'),
+     'error': Text('Something went wrong'),
+   },
+   defaultChild: Text('Unknown state'),
+ )
+ ```
+
+###  `AnimatedMatch`
+A conditional widget that renders a child based on a matching [value].  Works like a `switch` statement in Dart with animated transitions.
+ ```dart
+ AnimatedMatch<String>(
+   value: status,
+   duration: Duration(milliseconds: 300),
+   cases: {
+     'loading': CircularProgressIndicator(),
+     'success': Text('Loaded!'),
+     'error': Icon(Icons.error),
+   },
+   defaultChild: Text('Unknown state'),
+ )
+ ```
+
+###  `Delayed`
+ The Delayed widget waits for the given duration before rendering its child. Until the delay has passed it shows an empty space (a `SizedBox.shrink`).
+ ```dart
+ Delayed(
+   delay: Duration(seconds: 2),
+   child: Text('This appears after 2 seconds'),
+ )
+ ```
+
+
+###  `Maybe`
+If `child` is non-null, it is rendered normally. Otherwise, an empty widget (`SizedBox.shrink()`) is rendered,which occupies no space in the layout.
+ ```dart
+ Maybe(
+   child: someCondition ? Text('Visible') : null,
+ )
+ ```
+
+###  `Repeat`
+ This widget generates `count` children by invoking `builder` with the current index, and arranges them vertically in a `Column` or `Row`.
+ ```dart
+ Repeat(
+   count: 5,
+   builder: (index) => Text('Item #$index'),
+ )
+ ```
+
+###  `Responsive`
+A widget that builds different layouts based on the screen size.
+ ```dart
+ Responsive(
+  mobile: MobileHomePage(),
+  tablet: TabletHomePage(),
+  desktop: DesktopHomePage(),
+ )
+ ```
+
+###  `LifeCycle`
+ The `Lifecycle` widget allows you to execute custom code when the widget is initialized (`onInit`) and when it is disposed (`onDispose`). This is useful for managing resources, starting/stopping listeners, or triggering side effects tied to the widget's lifecycle without needing to create a full `StatefulWidget` yourself
+ ```dart
+Lifecycle(
+  onInit: () {
+    print('Widget initialized');
+  },
+  onDispose: () {
+    print('Widget disposed');
+  },
+  child: Text('Hello, world!'),
+)
+ ```
+
+
+
+## Utilities
+---
 ### Spacing
 
 Use the `AppSpacing` class for consistent padding and spacing. The values are based on a `base` unit of 8.0, allowing for a scalable and predictable layout.

@@ -4,8 +4,10 @@
 //  Created by Siva Sankar on 2025-09-17.
 // ------------------------------------------------------------ //
 
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mint_ui/mint_ui.dart';
 
@@ -234,4 +236,24 @@ class ScreenDimensions {
       brightness: mediaQuery.platformBrightness,
     );
   }
+}
+
+bool getIsWeb(BuildContext context) {
+  return kIsWeb;
+}
+
+bool getIsMobile(BuildContext context) {
+  if (kIsWeb) return getScreenWidth(context) < 600;
+  return Platform.isAndroid || Platform.isIOS;
+}
+
+bool getIsTablet(BuildContext context) {
+  final width = getScreenWidth(context);
+  if (kIsWeb) return width >= 600 && width < 1024;
+  return (Platform.isAndroid || Platform.isIOS) && width >= 600;
+}
+
+bool getIsDesktop(BuildContext context) {
+  if (kIsWeb) return getScreenWidth(context) >= 1024;
+  return Platform.isMacOS || Platform.isWindows || Platform.isLinux;
 }
