@@ -1,6 +1,11 @@
 
 # Changelog
 
+
+## 0.0.2
+* **Flutter Space Integration**
+    * Added `flutter_space` package
+
 ## 0.0.1
 * **Initial release.**
 * **`AppSpacing`:** Introduced a comprehensive set of constants for consistent spacing and padding.

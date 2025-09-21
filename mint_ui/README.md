@@ -22,7 +22,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  mint_ui: ^0.0.1 # (Or the latest version)
+  mint_ui: ^0.0.2 # (Or the latest version)
 ```
 
 Then, run `flutter pub get` to install the package.
